@@ -15,6 +15,8 @@ import Unsafe.Coerce (unsafeCoerce)
 
 import Example.Types (Todo(..), TodoStatus(..))
 
+import Styles.Components as Stylesheet
+
 type TodoFormProps
   = { todo :: Maybe Todo
     , onEdit :: Todo -> Effect Unit
@@ -34,14 +36,15 @@ todoFormClass = React.component "TodoForm" component
       , onEdit
       , onAdd
       } =
-      DOM.form
+      Stylesheet.formContainer
         [ Props.onSubmit onSubmit ]
-        [ DOM.input
+        [ Stylesheet.input
             [ Props._type "text"
             , Props.value value
             , Props.onChange onChange
             ]
-        , DOM.button
+        , Stylesheet.button
+            TodoPending
             [ Props._type "submit"
             , Props.disabled isDisabled
             ]

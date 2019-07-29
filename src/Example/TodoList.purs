@@ -42,29 +42,28 @@ todoListClass = React.component "TodoList" component
       , onDone
       , onClear
       } =
-      DOM.div
-        [ ]
+      Stylesheet.wrapper
         [ React.createLeafElement todoFormClass
             { todo
             , onEdit
             , onAdd
             }
-        , DOM.ol
-            [ ]
+        , Stylesheet.orderedList
             (renderItem <$> todos')
         ]
       where
       todos' = filter (\(Todo { status }) -> TodoCleared /= status) todos
 
       renderItem todo'@(Todo { status }) =
-        DOM.li
-          [ ]
+        Stylesheet.container [
+          Stylesheet.listItem
           [ React.createLeafElement todoItemClass { todo: todo' }
           , Stylesheet.button
               status
               [ Props.onClick onClick ]
               [ DOM.text text ]
           ]
+        ]
         where
         text =
           case status of
