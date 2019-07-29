@@ -1,8 +1,7 @@
 {
-  "name": "purescript-react-example",
+  "name": "purescript-stylesheet-example",
   "files": [],
   "scripts": {
-    "purs:compile": "purs compile 'bower_components/purescript-*/src/**/*.purs' 'src/**/*.purs'",
     "pscid": "pscid",
     "webpack": "webpack --mode development --progress",
     "webpack:watch": "webpack --mode development --progress --watch",

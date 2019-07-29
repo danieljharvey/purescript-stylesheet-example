@@ -10,9 +10,12 @@ import React.DOM.Props as Props
 import Styles.Colours as Colours
 import Styles.Fonts as Fonts
 
+-- | This creates the Stylesheet, and returns a React consumer, React provider, and some elements that use them
 styleContext :: StyleContext
 styleContext 
   = createStyleContext (SProxy :: SProxy "hey-nice-styles-buddy")
+
+---
 
 buttonStyles :: CSSRuleSet TodoStatus
 buttonStyles
@@ -21,19 +24,19 @@ buttonStyles
   <> str ("""
           padding: 10px;
          """)
-  <> str Fonts.largeFont
+  <> Fonts.largeFont
   <> fun (\status -> case status of
                         TodoDone -> ("border: solid 1px" <> Colours.title)
-                        _        -> "border: none;"
-          )
+                        _        -> "border: none;")
 
 button 
   :: TodoStatus 
   -> Array Props.Props
   -> Array React.ReactElement 
   -> React.ReactElement
-button = styleContext.withChildren.button buttonStyles
+button = styleContext.elements.button buttonStyles
 
+---
 
 type TextProps
   = { strikeThrough :: Boolean
@@ -41,7 +44,7 @@ type TextProps
 
 textStyles :: CSSRuleSet TextProps
 textStyles
-  =  str Fonts.largeFont
+  =  Fonts.largeFont
   <> str ("color: " <> Colours.title)
   <> str """
           margin: 10px;
@@ -55,8 +58,9 @@ text
   -> Array Props.Props
   -> Array React.ReactElement
   -> React.ReactElement
-text = styleContext.withChildren.p textStyles
+text = styleContext.elements.p textStyles
 
+---
 
 -- there is no reason we can't just smash in a big lump of CSS
 containerStyles :: CSSRuleSet Unit
@@ -73,15 +77,13 @@ containerStyles
 
 container :: Array React.ReactElement -> React.ReactElement
 container 
-  = styleContext.withChildren.div containerStyles unit []
+  = styleContext.elements.div containerStyles unit []
 
--- by separating our styling from the element in question,
--- it is easy to make pages make semantic sense by using the right element
 formContainer :: Array Props.Props -> Array React.ReactElement -> React.ReactElement
 formContainer 
-  = styleContext.withChildren.form containerStyles unit
+  = styleContext.elements.form containerStyles unit
 
-
+---
 
 wrapperStyles :: CSSRuleSet Unit
 wrapperStyles 
@@ -93,15 +95,20 @@ wrapperStyles
   <> str ("background-color: " <> Colours.pale)
 
 wrapper :: Array React.ReactElement -> React.ReactElement
-wrapper = styleContext.withChildren.div wrapperStyles unit []
+wrapper = styleContext.elements.div wrapperStyles unit []
 
+---
 
+orderedListStyles :: CSSRuleSet Unit
+orderedListStyles = str "margin: 0px; padding: 0px;"
 
 orderedList :: Array React.ReactElement -> React.ReactElement
-orderedList = styleContext.withChildren.ol (str "margin: 0px; padding: 0px;") unit []
+orderedList = styleContext.elements.ol orderedListStyles unit []
+
+---
 
 listItem :: Array React.ReactElement -> React.ReactElement
-listItem = styleContext.withChildren.li 
+listItem = styleContext.elements.li 
               (str """
                 display: flex;
                 flex-direction: row;
@@ -111,8 +118,10 @@ listItem = styleContext.withChildren.li
                 width: 100%;
                 """) unit []
 
+---
+
 inputStyles :: CSSRuleSet Unit
-inputStyles = str "width: 100%;" <> str Fonts.largeFont
+inputStyles = str "width: 100%;" <> Fonts.largeFont
 
 input :: Array Props.Props -> React.ReactElement
-input = styleContext.noChildren.input inputStyles unit
+input = styleContext.elements.input inputStyles unit
